@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平安符打卡系統 API 測試</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #d32f2f, #bf360c);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+        }
+
+        .section h2 {
+            color: #d32f2f;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #d32f2f;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #d32f2f, #bf360c);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #5a6268);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+
+        .response {
+            background: #000;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid #333;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .token-display {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏮 平安符打卡系統</h1>
+            <p>API 測試介面</p>
+        </div>
+
+        <div class="content">
+            <!-- 認證測試區 -->
+            <div class="section">
+                <h2>🔐 使用者認證</h2>
+                
+                <div class="form-group">
+                    <label>使用者名稱</label>
+                    <input type="text" id="username" placeholder="輸入使用者名稱" value="testuser">
+                </div>
+                
+                <div class="form-group">
+                    <label>電子郵件</label>
+                    <input type="email" id="email" placeholder="輸入電子郵件" value="test@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>密碼</label>
+                    <input type="password" id="password" placeholder="輸入密碼" value="password123">
+                </div>
+
+                <button class="btn" onclick="testRegister()">📝 註冊</button>
+                <button class="btn btn-secondary" onclick="testLogin()">🔑 登入</button>
+                <button class="btn btn-success" onclick="testMe()">👤 取得個人資訊</button>
+
+                <div id="authStatus"></div>
+                <div id="tokenDisplay"></div>
+            </div>
+
+            <!-- 功能測試區 -->
+            <div class="section">
+                <h2>🏛️ 功能測試</h2>
+                
+                <button class="btn" onclick="testGetTemples()">🏯 取得廟宇列表</button>
+                <button class="btn btn-secondary" onclick="testHealthCheck()">❤️ 健康檢查</button>
+                
+                <h3 style="margin-top: 25px; color: #d32f2f;">打卡測試</h3>
+                
+                <div class="form-group">
+                    <label>廟宇 ID</label>
+                    <input type="text" id="templeId" placeholder="先取得廟宇列表，複製 ID">
+                </div>
+                
+                <div class="form-group">
+                    <label>平安符 UID</label>
+                    <input type="text" id="amuletUid" placeholder="登入後會自動填入">
+                </div>
+                
+                <div class="form-group">
+                    <label>打卡備註</label>
+                    <textarea id="checkinNotes" placeholder="打卡備註（可選）" rows="3"></textarea>
+                </div>
+                
+                <button class="btn btn-success" onclick="testCheckin()">✅ 打卡</button>
+                <button class="btn btn-secondary" onclick="testCheckinHistory()">📅 打卡歷史</button>
+            </div>
+        </div>
+
+        <!-- 回應顯示區 -->
+        <div style="padding: 30px;">
+            <h2 style="color: #d32f2f; margin-bottom: 15px;">📊 API 回應</h2>
+            <div id="apiResponse" class="response">等待 API 呼叫...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        let currentToken = '';
+
+        // 顯示狀態訊息
+        function showStatus(message, isSuccess = true) {
+            const statusDiv = document.getElementById('authStatus');
+            statusDiv.innerHTML = `<div class="status ${isSuccess ? 'success' : 'error'}">${message}</div>`;
+        }
+
+        // 顯示 Token
+        function showToken(token) {
+            const tokenDiv = document.getElementById('tokenDisplay');
+            if (token) {
+                currentToken = token;
+                tokenDiv.innerHTML = `<div class="token-display"><strong>Token:</strong><br>${token}</div>`;
+            } else {
+                tokenDiv.innerHTML = '';
+            }
+        }
+
+        // 顯示 API 回應
+        function showResponse(data) {
+            document.getElementById('apiResponse').textContent = JSON.stringify(data, null, 2);
+        }
+
+        // 發送 API 請求
+        async function apiRequest(url, options = {}) {
+            try {
+                showResponse({ status: 'sending', message: `發送請求到 ${url}...` });
+                
+                const response = await fetch(API_BASE + url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(currentToken && { 'Authorization': `Bearer ${currentToken}` }),
+                        ...options.headers
+                    },
+                    ...options
+                });
+
+                const data = await response.json();
+                showResponse(data);
+                return data;
+            } catch (error) {
+                const errorData = { error: error.message, details: '請確保後端伺服器正在運行' };
+                showResponse(errorData);
+                return errorData;
+            }
+        }
+
+        // 測試註冊
+        async function testRegister() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !email || !password) {
+                showStatus('請填寫所有欄位', false);
+                return;
+            }
+
+            const data = await apiRequest('/api/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({ username, email, password })
+            });
+
+            if (data.success) {
+                showStatus('註冊成功！');
+                showToken(data.data.access_token);
+                // 自動填入平安符 UID
+                if (data.data.amulet) {
+                    document.getElementById('amuletUid').value = data.data.amulet.uid;
+                }
+            } else {
+                showStatus('註冊失敗: ' + data.message, false);
+            }
+        }
+
+        // 測試登入
+        async function testLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showStatus('請填寫電子郵件和密碼', false);
+                return;
+            }
+
+            const data = await apiRequest('/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password })
+            });
+
+            if (data.success) {
+                showStatus('登入成功！');
+                showToken(data.data.access_token);
+                // 自動填入平安符 UID
+                if (data.data.amulets && data.data.amulets.length > 0) {
+                    document.getElementById('amuletUid').value = data.data.amulets[0].uid;
+                }
+            } else {
+                showStatus('登入失敗: ' + data.message, false);
+            }
+        }
+
+        // 測試取得個人資訊
+        async function testMe() {
+            if (!currentToken) {
+                showStatus('請先登入', false);
+                return;
+            }
+
+            const data = await apiRequest('/api/auth/me');
+            if (data.success) {
+                showStatus('取得個人資訊成功');
+            }
+        }
+
+        // 測試取得廟宇列表
+        async function testGetTemples() {
+            const data = await apiRequest('/api/temples');
+            if (data.success && data.data && data.data.length > 0) {
+                showStatus(`取得 ${data.data.length} 個廟宇`);
+                // 自動填入第一個廟宇的 ID
+                document.getElementById('templeId').value = data.data[0].id;
+            }
+        }
+
+        // 測試健康檢查
+        async function testHealthCheck() {
+            await apiRequest('/health');
+        }
+
+        // 測試打卡
+        async function testCheckin() {
+            if (!currentToken) {
+                showStatus('請先登入', false);
+                return;
+            }
+
+            const templeId = document.getElementById('templeId').value;
+            const amuletUid = document.getElementById('amuletUid').value;
+            const notes = document.getElementById('checkinNotes').value;
+
+            if (!templeId || !amuletUid) {
+                showStatus('請填寫廟宇 ID 和平安符 UID', false);
+                return;
+            }
+
+            const data = await apiRequest('/api/checkin', {
+                method: 'POST',
+                body: JSON.stringify({
+                    temple_id: templeId,
+                    amulet_uid: amuletUid,
+                    notes: notes
+                })
+            });
+
+            if (data.success) {
+                showStatus(`打卡成功！獲得 ${data.data.points_earned} 福報值`);
+            } else {
+                showStatus('打卡失敗: ' + data.message, false);
+            }
+        }
+
+        // 測試打卡歷史
+        async function testCheckinHistory() {
+            if (!currentToken) {
+                showStatus('請先登入', false);
+                return;
+            }
+
+            const data = await apiRequest('/api/checkin/history');
+            if (data.success) {
+                showStatus(`取得 ${data.data.length} 筆打卡記錄`);
+            }
+        }
+
+        // 頁面載入時測試連線
+        window.onload = function() {
+            testHealthCheck();
+        };
+    </script>
+</body>
+</html>

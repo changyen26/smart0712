@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hsieh Chang-Yen</title>
+  <meta name="description" content="Hsieh Chang-Yen's online resume includes a self-introduction, education, research experience, patent achievements, competition awards, and press releases.">
+  <meta name="keywords" content="Hsieh Chang-Yen, resume, full-stack integration, IoT applications, materials science, electronic engineering, press releases">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700|Roboto:700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Global styles with system fonts */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Poppins', sans-serif;
+      line-height: 1.6;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+    }
+    p, li, a {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 300;
+    }
+    /* Language toggle buttons */
+    .lang-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10000;
+    }
+    .lang-toggle button {
+      margin-left: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    /* Default hide English content when in Chinese version */
+    .lang-en { display: none; }
+    /* Sticky Navigation Bar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: transparent;
+      padding: 0.5rem 1rem;
+      z-index: 1000;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    /* When scrolled add background */
+    .navbar.scrolled {
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .navbar ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .navbar ul li a:hover {
+      text-decoration: underline;
+    }
+    /* Hamburger menu button */
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: none; /* Hidden on desktop */
+    }
+    /* Header */
+    .header {
+      background: linear-gradient(90deg, #000, #555);
+      color: #fff;
+      text-align: center;
+      padding: 100px 0;
+      /* Parallax effect default */
+      background-position: center;
+      background-size: cover;
+    }
+    .header h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    .header p {
+      font-size: 1.5rem;
+    }
+    /* Container */
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+    section {
+      scroll-margin-top: 80px;
+      padding-top: 80px;
+      margin-top: -80px;
+    }
+    /* Section Titles */
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+    /* About Me / Self-introduction */
+    .about-me {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    /* Profile photo style */
+    .about-me .profile-photo img {
+      border-radius: 50%;
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+    }
+    .about-me .details {
+      flex: 1;
+    }
+    /* Card style */
+    .card {
+      background-color: #fff;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .card h4 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    /* Award text styling */
+    .award-text {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #000;
+    }
+    /* Gallery style (for competition proofs and press releases) */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .gallery-item {
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+    .gallery-item:hover {
+      transform: translateY(-5px);
+    }
+    .gallery-item img {
+      width: 100%;
+      display: block;
+    }
+    .gallery-item p {
+      text-align: center;
+      padding: 0.5rem;
+      font-weight: bold;
+    }
+    /* Competition gallery 2x2 layout */
+    #competitions .gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    /* Download Button */
+    .download-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #000;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .download-btn:hover {
+      background-color: #333;
+    }
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 1rem 0;
+      background-color: #000;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+    /* Back to top button */
+    #back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+      z-index: 10000;
+    }
+    #back-to-top:hover {
+      opacity: 1;
+    }
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      .header p {
+        font-size: 1.2rem;
+      }
+      .section-title {
+        font-size: 2rem;
+      }
+      /* Mobile navigation: display hamburger menu and hide original ul */
+      .menu-toggle {
+        display: block;
+      }
+      .navbar ul {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+      }
+      .navbar.active ul {
+        display: flex;
+      }
+      .navbar ul li {
+        margin: 0.5rem 0;
+        text-align: center;
+      }
+      section {
+        scroll-margin-top: 120px;
+        padding-top: 120px;
+        margin-top: -120px;
+      }
+      .about-me {
+        flex-direction: column;
+        text-align: center;
+      }
+      .about-me .details {
+        margin-top: 1rem;
+      }
+    }
+    /* Fade-in Animation for JS control */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+  </style>
+  <script>
+    // Language switch function: toggles between Chinese and English
+    function switchLanguage(lang) {
+      if (lang === 'en') {
+        document.querySelectorAll('.lang-zh').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'inline');
+        document.documentElement.lang = 'en';
+      } else {
+        document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.lang-zh').forEach(el => el.style.display = 'inline');
+        document.documentElement.lang = 'zh-Hant';
+      }
+    }
+    // Hamburger menu toggle
+    function toggleMenu() {
+      document.querySelector('.navbar').classList.toggle('active');
+    }
+  </script>
+</head>
+<body onload="switchLanguage('zh')">
+  <!-- Language toggle buttons -->
+  <div class="lang-toggle">
+    <button onclick="switchLanguage('zh')">中文</button>
+    <button onclick="switchLanguage('en')">English</button>
+  </div>
+  <!-- Sticky Navigation Bar -->
+  <nav class="navbar">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <ul>
+      <li><a href="#about"><span class="lang-zh">關於我</span><span class="lang-en">About Me</span></a></li>
+      <li><a href="#education"><span class="lang-zh">教育背景</span><span class="lang-en">Education</span></a></li>
+      <li><a href="#research"><span class="lang-zh">研究經驗</span><span class="lang-en">Research</span></a></li>
+      <li><a href="#patents"><span class="lang-zh">專利成就</span><span class="lang-en">Patents</span></a></li>
+      <li><a href="#competitions"><span class="lang-zh">競賽經驗與獎項</span><span class="lang-en">Competitions &amp; Awards</span></a></li>
+      <li><a href="#news"><span class="lang-zh">新聞稿</span><span class="lang-en">News</span></a></li>
+    </ul>
+  </nav>
+  
+  <!-- Header -->
+  <header class="header fade-in">
+    <h1>
+      <span class="lang-zh">謝長諺</span>
+      <span class="lang-en">Hsieh Chang-Yen</span>
+    </h1>
+    <p>
+      <span class="lang-zh">前後端整合｜物聯網應用｜材料科學與電子工程</span>
+      <span class="lang-en">Full-stack Integration｜IoT Applications｜Materials Science &amp; Electronic Engineering</span>
+    </p>
+  </header>
+  
+  <div class="container">
+    <!-- About Me / 自傳 -->
+    <section id="about" class="about-me fade-in">
+      <div class="profile-photo">
+        <img src="https://thumbsnap.com/i/c3hYzHwN.jpg?0314" alt="Hsieh Chang-Yen's profile photo" loading="lazy">
+      </div>
+      <div class="details">
+        <h2 class="section-title">
+          <span class="lang-zh">關於我</span>
+          <span class="lang-en">About Me</span>
+        </h2>
+        <p>
+          <span class="lang-zh">
+            我是朝陽科技大學｜資訊與通訊學系的謝長諺，培養了解決問題與突破困境的能力。對材料科學與電子工程充滿熱情，並在學期間積極參與各項科學競賽與研究專案，累積了豐富的實驗與創新經驗。
+          </span>
+          <span class="lang-en">
+            I am Hsieh Chang-Yen from the Department of Information and Communication Engineering at Chaoyang University of Technology. I have cultivated the ability to solve problems and overcome challenges. Passionate about materials science and electronic engineering, I actively participated in various scientific competitions and research projects during my studies, accumulating extensive experimental and innovative experience.
+          </span>
+        </p>
+         <!-- 聯絡資訊區塊 -->
+        <div class="contact-info" style="margin-top: 1.5rem; padding: 1rem; border-top: 1px solid #ddd; font-size: 1.2rem;">
+          <p>
+            <strong>
+              <span class="lang-zh">信箱：</span>
+              <span class="lang-en">Mail:</span>
+            </strong>
+            <a href="mailto:s11030108@cyut.edu.tw" style="text-decoration: none; color: inherit;">s11030108@cyut.edu.tw</a>
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Education / 教育背景 -->
+    <section id="education" class="fade-in">
+      <h2 class="section-title">
+        <span class="lang-zh">教育背景</span>
+        <span class="lang-en">Education</span>
+      </h2>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">朝陽科技大學｜資訊與通訊學系 學士</span>
+          <span class="lang-en">Chaoyang University of Technology | Dept. of Information &amp; Communication Engineering (Bachelor’s Degree)</span>
+        </h4>
+        <p><strong><span class="lang-zh">期間：</span><span class="lang-en">Period:</span></strong> 2021 - 2025</p>
+        <p>
+          <span class="lang-zh">
+            在校期間積極參與資訊科技及相關競賽，並參與多個實驗室研究專案，累積了紮實的理論與實務經驗。
+          </span>
+          <span class="lang-en">
+            During my studies, I actively participated in IT competitions and various laboratory research projects, building a solid foundation in both theory and practice.
+          </span>
+        </p>
+      </div>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">朝陽科技大學｜航空科技研究所 碩士</span>
+          <span class="lang-en">Chaoyang University of Technology | Graduate Institute of Aeronautics (Master’s Degree)</span>
+        </h4>
+        <p><strong><span class="lang-zh">期間：</span><span class="lang-en">Period:</span></strong> 2025 - </p>
+        <p>
+          <span class="lang-zh">
+            目前正準備攻讀航空科技研究所的碩士學位。
+          </span>
+          <span class="lang-en">
+            I am currently preparing to pursue a Master's degree at the Graduate Institute of Aeronautics.
+          </span>
+        </p>
+      </div>
+    </section>
+    
+    <!-- Research Experience / 研究經驗 -->
+    <section id="research" class="fade-in">
+      <h2 class="section-title">
+        <span class="lang-zh">研究經驗</span>
+        <span class="lang-en">Research Experience</span>
+      </h2>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">壓電材料研發專案</span>
+          <span class="lang-en">Piezoelectric Material Development Project</span>
+        </h4>
+        <p>
+          <span class="lang-zh">
+            大學三年級時參與壓電材料研究，成功開發出壓電複合材料感測器並獲得專利授權；隨後進行鐵電電容器整合場效電晶體與柔性複合材料奈米壓電發電機的研究，獲得國際競賽肯定。
+          </span>
+          <span class="lang-en">
+            In my junior year, I participated in piezoelectric material research and successfully developed a piezoelectric composite sensor that received a patent. Later, I worked on integrating ferroelectric capacitors with field-effect transistors and flexible composite nano piezoelectric generators, earning international recognition.
+          </span>
+        </p>
+      </div>
+    </section>
+    
+    <!-- Patents / 專利成就 -->
+    <section id="patents" class="fade-in">
+      <h2 class="section-title">
+        <span class="lang-zh">專利成就</span>
+        <span class="lang-en">Patents</span>
+      </h2>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">壓電複合材料感測器</span>
+          <span class="lang-en">Piezoelectric Composite Sensor</span>
+        </h4>
+        <p><strong><span class="lang-zh">專利號碼：</span><span class="lang-en">Patent No.:</span> M655946</strong></p>
+        <p><strong><span class="lang-zh">授權日期：</span><span class="lang-en">Date Granted:</span></strong> 2024/05/21</p>
+        <p>
+          <span class="lang-zh">
+            開發的新型壓電複合材料感測器具備高靈敏度與穩定性，適用於航空與醫療領域。
+          </span>
+          <span class="lang-en">
+            The newly developed piezoelectric composite sensor offers high sensitivity and stability, making it suitable for aerospace and medical applications.
+          </span>
+        </p>
+      </div>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">鐵電電容器整合場效電晶體</span>
+          <span class="lang-en">Ferroelectric Capacitor Integrated with FET</span>
+        </h4>
+        <p><strong><span class="lang-zh">專利號碼：</span><span class="lang-en">Patent No.:</span> M565262</strong></p>
+        <p><strong><span class="lang-zh">授權日期：</span><span class="lang-en">Date Granted:</span></strong> 2024/06/01</p>
+        <p>
+          <span class="lang-zh">
+            整合技術大幅提升了電子元件的性能與能效。
+          </span>
+          <span class="lang-en">
+            This integration technology significantly enhances the performance and energy efficiency of electronic components.
+          </span>
+        </p>
+      </div>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">柔性複合材料奈米壓電發電機結構改良</span>
+          <span class="lang-en">Improved Structure for Flexible Composite Nano Piezoelectric Generator</span>
+        </h4>
+        <p><strong><span class="lang-zh">專利號碼：</span><span class="lang-en">Patent No.:</span> M657451</strong></p>
+        <p><strong><span class="lang-zh">授權日期：</span><span class="lang-en">Date Granted:</span></strong> 2024/07/01</p>
+        <p>
+          <span class="lang-zh">
+            結構改良後的奈米壓電發電機不僅具備良好的柔性與耐用性，更適用於可穿戴設備與能源收集。
+          </span>
+          <span class="lang-en">
+            With an improved structure, the nano piezoelectric generator not only offers excellent flexibility and durability but is also ideal for wearable devices and energy harvesting.
+          </span>
+        </p>
+      </div>
+    </section>
+    
+    <!-- Competitions & Awards / 競賽經驗與獎項 -->
+    <section id="competitions" class="fade-in">
+      <h2 class="section-title">
+        <span class="lang-zh">競賽經驗與獎項</span>
+        <span class="lang-en">Competitions &amp; Awards</span>
+      </h2>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">2023年第十四屆 IIIC 國際創新發明競賽</span>
+          <span class="lang-en">14th IIIC International Innovation Competition (2023)</span>
+        </h4>
+        <p>
+          <strong>
+            <span class="lang-zh">獲獎等級：</span>
+            <span class="lang-en">Award Level:</span>
+          </strong> 
+          <span class="award-text lang-zh">金牌</span>
+          <span class="award-text lang-en">Gold</span>
+        </p>
+        <p>
+          <span class="lang-zh">作品名稱：壓電複合材料航空撞擊壓力感測器</span>
+          <span class="lang-en">Project: Piezoelectric Composite Sensor for Aerospace Impact Pressure</span>
+        </p>
+      </div>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">2024年第17屆創意好點子發想競賽</span>
+          <span class="lang-en">17th Creative Ideas Competition (2024)</span>
+        </h4>
+        <p>
+          <strong>
+            <span class="lang-zh">獲獎等級：</span>
+            <span class="lang-en">Award Level:</span>
+          </strong> 
+          <span class="award-text lang-zh">銀獎</span>
+          <span class="award-text lang-en">Silver</span>
+        </p>
+        <p>
+          <span class="lang-zh">作品名稱：壓電複合材料應用於航空撞擊壓力感測器</span>
+          <span class="lang-en">Project: Piezoelectric Composite Sensor for Aerospace Impact Pressure</span>
+        </p>
+      </div>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">2024年第35屆馬來西亞 ITEX 國際發明展</span>
+          <span class="lang-en">35th Malaysia ITEX International Invention Exhibition (2024)</span>
+        </h4>
+        <p>
+          <strong>
+            <span class="lang-zh">獲獎等級：</span>
+            <span class="lang-en">Award Level:</span>
+          </strong> 
+          <span class="award-text lang-zh">銀牌</span>
+          <span class="award-text lang-en">Silver</span>
+        </p>
+        <p>
+          <span class="lang-zh">作品名稱：壓電複合材料應用於航空撞擊壓力感測器</span>
+          <span class="lang-en">Project: Piezoelectric Composite Sensor for Aerospace Impact Pressure</span>
+        </p>
+      </div>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">2024年第六屆綠點子國際發明暨設計競賽</span>
+          <span class="lang-en">6th Green Ideas International Invention &amp; Design Competition (2024)</span>
+        </h4>
+        <p>
+          <strong>
+            <span class="lang-zh">獲獎等級：</span>
+            <span class="lang-en">Award Level:</span>
+          </strong> 
+          <span class="award-text lang-zh">銅牌</span>
+          <span class="award-text lang-en">Bronze</span>
+        </p>
+        <p>
+          <span class="lang-zh">作品名稱：應用於物聯網之低功率負電容鐵電場效電晶體元件</span>
+          <span class="lang-en">Project: Low-Power Negative Capacitance Ferroelectric FET for IoT Applications</span>
+        </p>
+      </div>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">2024年台灣創新技術博覽會</span>
+          <span class="lang-en">Taiwan Innovation Expo (2024)</span>
+        </h4>
+        <p>
+          <strong>
+            <span class="lang-zh">獲獎等級：</span>
+            <span class="lang-en">Award Level:</span>
+          </strong> 
+          <span class="award-text lang-zh">銀牌</span>
+          <span class="award-text lang-en">Silver</span>
+        </p>
+        <p>
+          <span class="lang-zh">作品名稱：壓電複合材料感測器</span>
+          <span class="lang-en">Project: Piezoelectric Composite Sensor</span>
+        </p>
+      </div>
+      <div class="card">
+        <h4>
+          <span class="lang-zh">2024年第十五屆 IIIC 國際創新發明競賽</span>
+          <span class="lang-en">15th IIIC International Innovation Competition (2024)</span>
+        </h4>
+        <p>
+          <strong>
+            <span class="lang-zh">獲獎等級：</span>
+            <span class="lang-en">Award Level:</span>
+          </strong> 
+          <span class="award-text lang-zh">金牌</span>
+          <span class="award-text lang-en">Gold</span>
+        </p>
+        <p>
+          <span class="lang-zh">作品名稱：低功耗非揮發性鐵電複合記憶體</span>
+          <span class="lang-en">Project: Low-Power Non-volatile Ferroelectric Composite Memory</span>
+        </p>
+      </div>
+      <!-- Competition proof images (2x2 layout) -->
+      <div class="gallery">
+        <div class="gallery-item">
+          <img src="https://lh3.googleusercontent.com/pw/AP1GczNjjooemJAM8NWkocbIZHjQWw-Ha1OqECspDndqoK7N7JgB6Vcnf7aNHCkAHh0axuVQ8kqn_SCgCfIcOLuSsQ-0kfjOZuhV1aWq7qQF51OATAFTRF42RF-QznwtvasrlWuAGv7CzUxmFEHnsafJX7JJNw=w1919-h1279-s-no-gm?authuser=0" alt="2023 IIIC 金牌 / 2023 IIIC Gold" loading="lazy">
+          <p>
+            <span class="lang-zh">2023 IIIC 金牌</span>
+            <span class="lang-en">2023 IIIC Gold</span>
+          </p>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2024/05/21/2/29691491.jpg&x=0&y=0&sw=0&sh=0&sl=W&fw=1050&exp=3600&exp=3600" alt="2024 馬來西亞 ITEX 銀牌 / 2024 Malaysia ITEX Silver" loading="lazy">
+          <p>
+            <span class="lang-zh">2024 馬來西亞 ITEX 銀牌</span>
+            <span class="lang-en">2024 Malaysia ITEX Silver</span>
+          </p>
+        </div>
+        <div class="gallery-item">
+          <img src="https://thumbsnap.com/i/a8nkAP2A.jpg?0314" alt="2024 台灣創新技術博覽會 銀牌 / 2024 Taiwan Innovation Expo Silver" loading="lazy">
+          <p>
+            <span class="lang-zh">2024 台灣創新技術博覽會 銀牌</span>
+            <span class="lang-en">2024 Taiwan Innovation Expo Silver</span>
+          </p>
+        </div>
+        <div class="gallery-item">
+          <img src="https://lh3.googleusercontent.com/pw/AP1GczPz6-l_obLqsjaKLQNP2DAfEXZ3xMo2PnN_JBGqRE-vvJlv_jpGm60mHy2OHZDwLqDYc_PlmLIzHcZTUAVy-fOOefDzpD-u73u6QM7XOQlqznfmL6Y4KXsiqexWb7JB1RL5A_cemugTCcFdyIu4zW0Yiw=w1919-h1279-s-no-gm?authuser=0" alt="2024 IIIC 金牌 / 2024 IIIC Gold" loading="lazy">
+          <p>
+            <span class="lang-zh">2024 IIIC 金牌</span>
+            <span class="lang-en">2024 IIIC Gold</span>
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- News / 新聞稿 -->
+    <section id="news" class="fade-in">
+      <h2 class="section-title">
+        <span class="lang-zh">新聞稿</span>
+        <span class="lang-en">News</span>
+      </h2>
+      <div class="gallery">
+        <div class="gallery-item">
+          <a href="https://www.cna.com.tw/postwrite/chi/389080" target="_blank" rel="noopener">
+            <img src="https://imgcdn.cna.com.tw/www/postwrite/2024/20241203/00389080.202412031126527410M.jpg" alt="CNA Press Release" loading="lazy">
+            <p>
+              <span class="lang-zh">AI創新技術再突破 朝陽科大資訊學院畢業展成果亮眼</span>
+              <span class="lang-en">Another Breakthrough in AI Innovation: Chaoyang University of Technology's College of Information Graduation Exhibition Delivers Impressive Results.</span>
+            </p>
+          </a>
+        </div>
+        <div class="gallery-item">
+          <a href="https://www.cdns.com.tw/articles/1015462" target="_blank" rel="noopener">
+            <img src="https://d1j71ui15yt4f9.cloudfront.net/wp-content/uploads/2024/05/21181208/1224131_0-1-696x522.jpg" alt="Press Release 2" loading="lazy">
+            <p>
+              <span class="lang-zh">ITEX馬來西亞國際發明展 朝陽科大展現永續研發實力</span>
+              <span class="lang-en">ITEX Malaysia International Invention Exhibition: Chaoyang University of Technology Showcases Sustainable R&amp;D Capabilities</span>
+            </p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="footer fade-in">
+    <p>© 2025 Hsieh Chang-Yen. All rights reserved.</p>
+  </footer>
+  
+  <!-- Back to top button -->
+  <button id="back-to-top" onclick="scrollToTop()">↑</button>
+  
+  <!-- Load GSAP & ScrollMagic and their plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
+  <script>
+    // Initialize ScrollMagic controller
+    var controller = new ScrollMagic.Controller();
+    
+    // Set scroll-triggered animation for elements with .fade-in class
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+      gsap.set(el, { opacity: 0, y: 50 });
+      new ScrollMagic.Scene({
+        triggerElement: el,
+        triggerHook: 0.9,
+        reverse: false
+      })
+      .setTween(gsap.to(el, { duration: 1, opacity: 1, y: 0, ease: "power2.out" }))
+      .addTo(controller);
+    });
+    
+    // Parallax effect: adjust header background position based on scroll
+    window.addEventListener('scroll', function() {
+      var scrolled = window.pageYOffset;
+      document.querySelector('.header').style.backgroundPositionY = -(scrolled * 0.5) + 'px';
+    });
+    
+    // Change navigation bar background on scroll
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('.navbar');
+      if (window.pageYOffset > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+    
+    // Back to top button and smooth scrolling
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.addEventListener('scroll', function() {
+      const btn = document.getElementById('back-to-top');
+      if (window.pageYOffset > 200) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
